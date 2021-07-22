@@ -1,0 +1,23 @@
+<div class="container mt-4 posts">
+    <div class="row">
+        <div class="col-md-8 col-lg-8 posts__list">
+            {{#each posts}}
+                <div class="card mb-3 post" >
+                    <div class="row">
+                        <div class="col-md-12 col-lg-6">
+                            <img src="{{this.thumb}}" class="img-fluid rounded-start" alt="...">
+                        </div>
+                        <div class="col-md-12 col-lg-6">
+                            <div class="card-body">
+                                <h5 class="card-title">{{this.title}}</h5>
+                                <p class="card-text">{{this.content}}</p>
+                                <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {{/each }}
+        </div>
+    </div>
+</div>
+

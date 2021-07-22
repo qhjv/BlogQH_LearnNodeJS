@@ -15,11 +15,11 @@
 </head>
 <body>
     <div class="app">
-
-        <%- include("../partials/header.ejs")%>
+        
+        {{> header}}
         <div class="pageBlog">
             <div class="container">
-                
+                {{{body}}}
             </div>
         </div>
     </div>
