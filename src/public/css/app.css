@@ -1,0 +1,33 @@
+.pageBlog {
+  color: #141414; }
+  .pageBlog .posts .posts__list .post .post__a {
+    text-decoration: none;
+    color: #000000; }
+  .pageBlog .posts .posts__list .post .card-content {
+    color: #4a4a4a;
+    overflow: hidden;
+    display: -webkit-box;
+    text-overflow: ellipsis;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    width: 100%;
+    max-height: 75px;
+    line-height: 25px; }
+
+.post__viewPage .post__view .post__view--title {
+  margin: 20px 0; }
+
+.post__viewPage .post__view .post__view--thumb img {
+  width: 100%; }
+
+.post__viewPage .post__view .post__view--content {
+  margin-top: 20px; }
+
+.post__viewPage .post__view .post__view--content p {
+  text-align: justify; }
+
+.post__viewPage .post__view .post__view--author {
+  text-align: end; }
+
+.hien {
+  display: block; }

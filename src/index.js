@@ -1,47 +1,47 @@
-const path = require('path')
-const express = require('express')
-const morgan = require('morgan')
-const route = require('./routes')
+const path = require('path');
+const express = require('express');
+const morgan = require('morgan');
 const handlebars = require('express-handlebars');
-const db = require('./config/db')
 
-const app = express()
-const port = 8080
+const route = require('./routes');
+const db = require('./config/db');
+
+// Connect to DB
+db.connect();
+
+const app = express();
+const port = 8080;
+
+// Use static folder
+app.use(express.static(path.join(__dirname, 'public')));
+
+app.use(
+    express.urlencoded({
+        extended: true,
+    }),
+);
+app.use(express.json());
+
+
+// HTTP logger
+// app.use(morgan('combined'));
 
 // Template engine
 app.engine(
-  'hbs',
-  handlebars({
-      extname: '.hbs',
-      helpers: {
-          sum: (a, b) => a + b,
-      },
-  }),
+    'hbs',
+    handlebars({
+        extname: '.hbs',
+        helpers: {
+            sum: (a, b) => a + b,
+        },
+    }),
 );
-app.use(morgan('combined'))
-app.use(express.static(path.join(__dirname,'public')))
-
-
 app.set('view engine', 'hbs');
-app.set('views', path.join(__dirname, 'resources', 'views'))
+app.set('views', path.join(__dirname, 'resources', 'views'));
 
+// Routes init
+route(app);
 
-//route
-route(app)
-
-//connect
-db.connect()
-
-app.listen(port, () => {
-  console.log(`app listening at http://localhost:${port}`)
-})
-
-
-
-
-
-
-
-
-
-
+app.listen(port, () =>
+    console.log(`App listening at http://localhost:${port}`),
+);

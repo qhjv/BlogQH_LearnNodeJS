@@ -1,10 +1,10 @@
 const newsRouter = require('./news');
 const siteRouter = require('./site');
-const searchRouter = require('./search');
+const postRouter = require('./posts');
 
 function route(app){
     app.use('/news',newsRouter) 
-    app.use('/search',searchRouter) 
+    app.use('/post',postRouter) 
     app.use('/', siteRouter)
 
 }
