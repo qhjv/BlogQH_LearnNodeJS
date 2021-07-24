@@ -1,0 +1,28 @@
+<div class="admin__form">
+    <div class="container mt-4">
+        <h2>Sửa bài đăng</h2>
+        <form method="POST" action="/post/admin/{{post._id}}?_method=PUT">
+            <div class="mb-3">
+                <label for="title" class="form-label">Title</label>
+                <input type="text" name="title" class="form-control" id="title" value="{{post.title}}">
+            </div>
+            <div class="mb-3">
+                <label for="thumb" class="form-label">thumb</label>
+                <input type="text" name="thumb" class="form-control" id="thumb" value="{{post.thumb}}">
+            </div>
+            <div class="mb-3">
+                <label for="content1" class="form-label">content1</label>
+                <textarea type="text" name="content1" class="form-control" id="content1" style="height:200px;">{{post.content1}}</textarea>
+            </div>
+            <div class="mb-3">
+                <label for="content2" class="form-label">content2</label>
+                <textarea type="text" name="content2" class="form-control" id="content2" style="height:200px;">{{post.content2}}</textarea>
+            </div>
+            <div class="mb-3">
+                <label for="author" class="form-label" >author</label>
+                <input type="text" name="author" class="form-control" id="author" value="{{post.author}}">
+            </div>
+            <button type="submit" class="btn btn-primary">Sửa</button>
+        </form>
+    </div>
+</div>

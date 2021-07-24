@@ -6,7 +6,7 @@ const Post = new Schema({
     title: { type: String, min:200},
     content1: { type: String,min: 200 },
     content2: { type: String,min: 200 },
-    arthor: { type: String},
+    author: { type: String},
 
   },{
     timestamps:true

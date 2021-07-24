@@ -1,5 +1,5 @@
 const Post = require('../models/posts')
-const { mongooseToOb } = require('../../util/mongoose')
+const { mongooseToOb, mongooseToObject } = require('../../util/mongoose')
 
 class PostController {
 
@@ -20,6 +20,25 @@ class PostController {
         post.save()
         .then(()=>res.redirect('/'))
         .catch(error=>{})
+    }
+    showPost(req, res,next) {
+        Post.find({})
+        .then(post => res.render('admin/show',{
+            post: mongooseToObject(post)
+        }))
+        .catch(next)
+    }
+    edit(req, res,next) {
+        Post.findById(req.params.id)
+        .then((post)=>{
+            res.render('admin/edit',{post:mongooseToOb(post)})
+        }).catch(next)
+    }
+    //[PUT] post/admin/:id
+    update(req, res,next) {
+        Post.updateOne({_id : req.params.id}, req.body)
+            .then(() => res.redirect('/post/admin/show'))
+            .catch(next)
     }
 }
 module.exports= new PostController
