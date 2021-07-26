@@ -1,8 +1,8 @@
 <div class="adminViewPost mt-4">
-    <h2>Bài đăng của tôi</h2>
     <div>
-        <a href="/post/admin/trash">Thùng rác</a>
+        <a href="/post/admin/show">Danh sách bài đăng</a>
     </div>
+    <h2>Bài đăng đã xóa</h2>
     <div class="container mt-4">
         <div class="row">
             <table class="table">
@@ -23,15 +23,15 @@
                         <td>{{this.createdAt}}</td>
                         <td>{{this.author}}</td>
                         <td>
-                            <a href="/post/admin/{{this._id}}/edit" class="btn btn-link">Sửa</a>
-                            <a href="" class="btn btn-link" data-id="{{this._id}}" data-bs-toggle="modal" data-bs-target="#exampleModal">Xóa</a>
+                            <a href="/post/admin/{{this._id}}/edit" class="btn btn-link" data-id="{{this._id}}" data-bs-toggle="modal" data-bs-target="#exampleModal">Xóa vĩnh viễn</a>
+                            <a data-id="{{this._id}}" class="btn btn-link buttonRestore" >Khôi phục</a>
                         </td>
                     </tr>
                     {{else}}
                         <tr>
                             <td colspan="5" style="text-align: center;">
-                                Chưa có bài đăng nào
-                                <a href="/post/admin">Thêm bài đăng</a>
+                                Thùng rác trống 
+                                <a href="/post/admin/show">Danh sách bài đăng</a>
                             </td>
                         </tr>
                     {{/each}}
@@ -51,29 +51,41 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        <p>Bạn có muốn xóa bài đăng này ?</p>
+        <p>Bạn có muốn xóa vĩnh viễn bài đăng này ?</p>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn " data-bs-dismiss="modal">Hủy</button>
-        <button id="btn-delete" type="button" class="btn btn-danger">Xóa</button>
+        <button id="btn-delete" type="button" class="btn btn-danger">Xóa vĩnh viễn</button>
       </div>
     </div>
   </div>
 </div>
 
 <form method="POST" id="formDelete"></form>
+<form method="POST" id="formRestore"></form>
 
 <script>
-    var exampleModal = document.getElementById('exampleModal')
-    exampleModal.addEventListener('show.bs.modal', function (event) {
-        var deleteID
-        var button = event.relatedTarget
-        deleteID = button.getAttribute('data-id')
-        var deleteForm = document.getElementById('formDelete')
-        var buttonDelete = document.getElementById('btn-delete')
-        buttonDelete.onclick = function(){
-            deleteForm.action = '/post/admin/' + deleteID +'?_method=DELETE'
-            deleteForm.submit()
-        }
+    document.addEventListener('DOMContentLoaded',function(){
+
+        var restoreForm = document.getElementById('formRestore')
+        $('.buttonRestore').click(function(){
+            console.log("hihi")
+            //e.preventDefault//bỏ hành vi mặc định(refest trang)
+            //$(this).data('id')
+            restoreForm.action = '/post/admin/' + $(this).data('id') +'/restore?_method=PATCH'
+            restoreForm.submit()
+        })
+        var exampleModal = document.getElementById('exampleModal')
+        exampleModal.addEventListener('show.bs.modal', function (event) {
+            var deleteID
+            var button = event.relatedTarget
+            deleteID = button.getAttribute('data-id')
+            var deleteForm = document.getElementById('formDelete')
+            var buttonDelete = document.getElementById('btn-delete')
+            buttonDelete.onclick = function(){
+                deleteForm.action = '/post/admin/' + deleteID +'/real?_method=DELETE'
+                deleteForm.submit()
+            }
+        })
     })
 </script>
