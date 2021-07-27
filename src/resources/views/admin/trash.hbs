@@ -1,27 +1,43 @@
-<div class="adminViewPost mt-4">
+<form class="adminViewPost mt-4" name="container-form" method="POST" action="/post/admin/trash/actions">
     <div>
         <a href="/post/admin/show">Danh sách bài đăng</a>
     </div>
     <h2>Bài đăng đã xóa</h2>
     <div class="container mt-4">
         <div class="row">
+            <div class="checkDiv d-flex align-items-center">
+                <div class="form-check">
+                    <input class="form-check-input checkAll" type="checkbox" value="" id="flexCheckDefault">
+                    <label class="form-check-label" for="flexCheckDefault">
+                        Chọn tất cả
+                    </label>
+                </div>
+                <select class="form-select form-select-sm" name="action" aria-label="Default select example" required>
+                    <option value="">Chọn phương thức</option>
+                    <option value="delete">Xóa vĩnh viễn</option>
+                    <option value="restore">Khôi phục</option>
+                </select>
+                <button class="btn btn-primary btn-sm checkAll-delete-btn">Thực hiện</button>
+            </div>
             <table class="table">
                 <thead>
                     <tr>
+                        <th></th>
                         <th scope="col">STT</th>
                         <th scope="col">Title</th>
-                        <th scope="col">Ngày đăng</th>
-                        <th scope="col">Người đăng</th>
+                        <th scope="col">Ngày xóa</th>
                         <th scope="col">Công cụ</th>
                     </tr>
                 </thead>
                 <tbody>
                     {{#each post}}
                     <tr>
+                        <th>
+                            <input class="form-check-input checkOne" type="checkbox" name="deleteAll[]" value="{{this._id}}" id="flexCheckDefault">
+                        </th>
                         <th scope="row">{{sum @index 1}}</th>
                         <td>{{this.title}}</td>
-                        <td>{{this.createdAt}}</td>
-                        <td>{{this.author}}</td>
+                        <td>{{this.deletedAt}}</td>
                         <td>
                             <a href="/post/admin/{{this._id}}/edit" class="btn btn-link" data-id="{{this._id}}" data-bs-toggle="modal" data-bs-target="#exampleModal">Xóa vĩnh viễn</a>
                             <a data-id="{{this._id}}" class="btn btn-link buttonRestore" >Khôi phục</a>
@@ -39,7 +55,7 @@
             </table>
         </div>
     </div>
-</div>
+</form>
 <!--
     Dialog
 -->
@@ -85,6 +101,34 @@
             buttonDelete.onclick = function(){
                 deleteForm.action = '/post/admin/' + deleteID +'/real?_method=DELETE'
                 deleteForm.submit()
+            }
+        })
+        //check delete
+        var checkAll = $('.checkAll')
+        var checkOne = $('input[name="deleteAll[]"]')
+        var btnDeleteCheck = $('.checkAll-delete-btn')
+        checkAll.change(function(){
+            var isCheckAll=$(this).prop('checked')
+            checkOne.prop('checked',isCheckAll)
+            btnCheckAll()
+        })
+        checkOne.change(function(){
+            var isCheckAll= checkOne.length === $('input[name="deleteAll[]"]:checked').length
+            checkAll.prop('checked',isCheckAll)
+            btnCheckAll()
+        })
+        function btnCheckAll(){
+            var checkedCount =$('input[name="deleteAll[]"]:checked').length
+            if(checkedCount){
+                btnDeleteCheck.addClass('hien')
+            }else{
+                btnDeleteCheck.removeClass('hien')
+            }
+        }
+        $('checkAll-delete-btn').on('submit',function(e){
+            var isSubmit = !$(this).hasClass('hien')
+            if(!isSubmit){
+                e.preventDefault()
             }
         })
     })

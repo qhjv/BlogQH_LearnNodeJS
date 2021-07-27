@@ -48,8 +48,18 @@
     }
 }
 .hien{
-    display: block;
+    display: block!important;
 }
 .header{
     background-color: #212529;
+}
+.checkDiv{
+    margin: 20px 0;
+    .form-select{
+        width:170px;
+        margin: 0 20px;
+    }
+    .checkAll-delete-btn{
+        display: none;
+    }
 }

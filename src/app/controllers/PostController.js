@@ -22,11 +22,13 @@ class PostController {
         .catch(error=>{})
     }
     showPost(req, res,next) {
-        Post.find({})
-        .then(post => res.render('admin/show',{
-            post: mongooseToObject(post)
-        }))
-        .catch(next)
+        Promise.all([Post.find({}),Post.countDocumentsDeleted()])
+                .then(([post,deletedCount])=>
+                    res.render('admin/show',{
+                        deletedCount,
+                        post: mongooseToObject(post)
+                }))
+                .catch(next)
     }
     edit(req, res,next) {
         Post.findById(req.params.id)
@@ -59,8 +61,40 @@ class PostController {
     }
     restore(req, res,next) {
         Post.restore({_id : req.params.id})
-            .then(() => res.redirect('/post/admin/show'))
+            .then(() => res.redirect('back'))
             .catch(next)
+    }
+    action(req, res,next){
+        switch (
+            req.body.action
+        ) {
+            case 'delete':
+                Post.delete({_id :{$in:req.body.deleteAll} })
+                .then(() => res.redirect('back'))
+                .catch(next)
+                break;
+        
+            default:
+                res.json({message :'action is invalid!'});
+        }
+    }
+    actionTrash(req, res,next){
+        switch (
+            req.body.action
+        ) {
+            case 'delete':
+                Post.deleteOne({_id :{$in:req.body.deleteAll} })
+                .then(() => res.redirect('back'))
+                .catch(next)
+                break;
+            case 'restore':
+                Post.restore({_id :{$in:req.body.deleteAll} })
+                .then(() => res.redirect('back'))
+                .catch(next)
+                break;
+            default:
+                res.json({message :'action is invalid!'});
+        }
     }
 }
 module.exports= new PostController
